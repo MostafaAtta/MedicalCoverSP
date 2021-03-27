@@ -1,4 +1,4 @@
-package com.atta.medicalcoversp.ui.notifications;
+package com.atta.medicalcoversp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;

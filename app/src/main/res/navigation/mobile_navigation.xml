@@ -7,19 +7,51 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.atta.medicalcoversp.ui.home.HomeFragment"
+        android:name="com.atta.medicalcoversp.ui.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_appointment"
-        android:name="com.atta.medicalcoversp.ui.dashboard.AppointmentFragment"
+        android:name="com.atta.medicalcoversp.ui.AppointmentsFragment"
         android:label="@string/title_appointment"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_appointment" >
+        <action
+            android:id="@+id/action_navigation_appointment_to_navigation_appointment_details"
+            app:destination="@id/navigation_appointment_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.atta.medicalcoversp.ui.notifications.SettingsFragment"
+        android:name="com.atta.medicalcoversp.ui.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_notifications" />
+
+
+    <fragment
+        android:id="@+id/navigation_appointment_details"
+        android:name="com.atta.medicalcoversp.ui.AppointmentDetailsFragment"
+        android:label="@string/title_appointment_details"
+        tools:layout="@layout/fragment_appointment_details" >
+        <argument
+            android:name="appointment"
+            app:argType="com.atta.medicalcoversp.Appointment" />
+        <action
+            android:id="@+id/action_navigation_appointment_details_to_navigation_new_prescription"
+            app:destination="@id/navigation_new_prescription" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_new_prescription"
+        android:name="com.atta.medicalcoversp.ui.NewPrescriptionFragment"
+        android:label="@string/new_prescription"
+        tools:layout="@layout/fragment_new_prescription" >
+        <argument
+            android:name="appointment"
+            app:argType="com.atta.medicalcoversp.Appointment" />
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
 </navigation>

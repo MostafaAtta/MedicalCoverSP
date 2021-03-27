@@ -1,20 +1,37 @@
 package com.atta.medicalcoversp;
 
-public class User {
+import java.io.Serializable;
 
-    private String fullName, email, phone, doctorId;
+public class User implements Serializable {
+
+    private String fullName, email, phone, doctorId, dateOfBirth, gender, membershipNumber,
+            policyHolder, policyNumber;
 
     private int type;
-
 
     public User() {
     }
 
-    public User(String fullName, String email, String phone, int type) {
+    public User(String fullName, String email, String phone, String doctorId, String dateOfBirth, String gender, int type) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
+        this.doctorId = doctorId;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
         this.type = type;
+    }
+
+    public String getMembershipNumber() {
+        return membershipNumber;
+    }
+
+    public String getPolicyHolder() {
+        return policyHolder;
+    }
+
+    public String getPolicyNumber() {
+        return policyNumber;
     }
 
     public String getFullName() {
@@ -35,5 +52,13 @@ public class User {
 
     public String getDoctorId() {
         return doctorId;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

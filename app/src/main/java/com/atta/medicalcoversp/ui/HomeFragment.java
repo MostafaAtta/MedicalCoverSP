@@ -1,4 +1,4 @@
-package com.atta.medicalcoversp.ui.home;
+package com.atta.medicalcoversp.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
