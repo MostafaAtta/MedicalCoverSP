@@ -1,10 +1,14 @@
 package com.atta.medicalcoversp;
 
+import com.google.firebase.Timestamp;
+
 import java.io.Serializable;
 
 public class Appointment implements Serializable {
 
     private String id, clinicName, clinicId, date, timeSlot, doctorId, status, userId;
+
+    Timestamp timestamp;
 
     public Appointment() {
     }
@@ -17,6 +21,14 @@ public class Appointment implements Serializable {
         this.doctorId = doctorId;
         this.status = status;
         this.userId = userId;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
     public String getId() {

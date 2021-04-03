@@ -42,8 +42,6 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
 
     Button confirmBtn, cancelBtn, addPrescription;
 
-    boolean confirmed;
-
     String phoneNumber;
 
     FirebaseFirestore db;
@@ -78,6 +76,7 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
         confirmBtn = root.findViewById(R.id.confirm_btn);
         confirmBtn.setOnClickListener(this);
         cancelBtn = root.findViewById(R.id.cancel_btn);
+        cancelBtn.setOnClickListener(this);
 
         callImg = root.findViewById(R.id.call_imag);
 
@@ -86,15 +85,15 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
         getUserDetails();
 
         if (appointment.getStatus().equalsIgnoreCase("confirmed")){
-            confirmed = true;
+
             confirmBtn.setText("Finish");
         }else if (appointment.getStatus().equalsIgnoreCase("canceled") ||
                 appointment.getStatus().equalsIgnoreCase("finished")){
-            confirmed = false;
+
             confirmBtn.setVisibility(View.GONE);
             cancelBtn.setVisibility(View.GONE);
         }else {
-            confirmed = false;
+
             confirmBtn.setVisibility(View.VISIBLE);
             cancelBtn.setVisibility(View.VISIBLE);
         }
@@ -144,6 +143,7 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     patient = documentSnapshot.toObject(User.class);
+                    patient.setId(documentSnapshot.getId());
                     patientNameTv.setText(patient.getFullName());
 
                     phoneNumber = patient.getPhone();
@@ -180,7 +180,7 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view == confirmBtn){
-            if (!confirmed){
+            if (!appointment.getStatus().equalsIgnoreCase("confirmed")){
                 Map<String, String> map = new HashMap<>();
                 map.put("status", "Confirmed");
                 db.collection("Appointments").document(appointment.getId())
@@ -188,6 +188,9 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                appointment.setStatus("Confirmed");
+                                statusTv.setText(appointment.getStatus());
+                                confirmBtn.setText("Finished");
                                 Toast.makeText(getContext(), "status updated", Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -197,15 +200,43 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                                 Toast.makeText(getContext(), "Error, try again", Toast.LENGTH_SHORT).show();
                             }
                         });
+            }else if (appointment.getStatus().equalsIgnoreCase("confirmed")){
+                Navigation.findNavController(view)
+                        .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToNavigationNewPrescription(appointment, patient));
+
             }
         }else if (view == callImg){
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + phoneNumber));
             startActivity(intent);
         }else if (view == addPrescription){
-            Navigation.findNavController(view)
-                    .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToNavigationNewPrescription(appointment, patient));
+            if (!appointment.getStatus().equalsIgnoreCase("Cancelled") ||
+                    !appointment.getStatus().equalsIgnoreCase("Finished")) {
+                Navigation.findNavController(view)
+                        .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToNavigationNewPrescription(appointment, patient));
 
+            }
+        }else if (view == cancelBtn){
+            Map<String, String> map = new HashMap<>();
+            map.put("status", "Cancelled");
+            db.collection("Appointments").document(appointment.getId())
+                    .set(map, SetOptions.merge())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            appointment.setStatus("Cancelled");
+                            statusTv.setText(appointment.getStatus());
+                            confirmBtn.setVisibility(View.GONE);
+                            cancelBtn.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "status updated", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Error, try again", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 }

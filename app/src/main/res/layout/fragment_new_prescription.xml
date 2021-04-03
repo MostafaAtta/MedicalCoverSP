@@ -213,6 +213,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <Button
+        android:id="@+id/confirmBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

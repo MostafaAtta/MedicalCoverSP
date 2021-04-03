@@ -52,6 +52,9 @@
         <argument
             android:name="user"
             app:argType="com.atta.medicalcoversp.User" />
+        <action
+            android:id="@+id/action_navigation_new_prescription_to_navigation_appointment"
+            app:destination="@id/navigation_appointment" />
     </fragment>
 
 </navigation>

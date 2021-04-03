@@ -70,7 +70,6 @@ public class AppointmentsFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Toast.makeText(getContext(), String.valueOf(queryDocumentSnapshots.size()), Toast.LENGTH_SHORT).show();
 
                         if (!queryDocumentSnapshots.isEmpty()){
                             ArrayList<Appointment> appointments = new ArrayList<>();

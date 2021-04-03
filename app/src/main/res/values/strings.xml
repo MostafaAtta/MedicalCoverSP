@@ -29,4 +29,11 @@
     <string name="enter_diagnosis">Enter Diagnosis</string>
     <string name="medications">Medications:</string>
     <string name="lab_radiology"><![CDATA[Lab & Radiology]]></string>
+    <string name="new_medication">New Medication</string>
+    <string name="enter_medication_name">Enter medication name</string>
+    <string name="done">Done</string>
+    <string name="enter_medication_dose">Enter medication dose</string>
+    <string name="enter_medication_duration">Enter medication duration</string>
+    <string name="new_medical_test">New Medical Test</string>
+    <string name="enter_test_name">Enter Test or Radiology Name</string>
 </resources>

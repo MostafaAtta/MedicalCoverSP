@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String fullName, email, phone, doctorId, dateOfBirth, gender, membershipNumber,
+    private String id, fullName, email, phone, doctorId, dateOfBirth, gender, membershipNumber,
             policyHolder, policyNumber;
 
     private int type;
@@ -60,5 +60,13 @@ public class User implements Serializable {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
