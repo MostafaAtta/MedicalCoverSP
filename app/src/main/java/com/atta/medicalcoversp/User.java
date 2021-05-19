@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String id, fullName, email, phone, doctorId, dateOfBirth, gender, membershipNumber,
+    private String id, fullName, email, phone, doctorId, pharmacyId, centerId, dateOfBirth, gender, membershipNumber,
             policyHolder, policyNumber;
 
     private int type;
@@ -12,7 +12,8 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String fullName, String email, String phone, String doctorId, String dateOfBirth, String gender, int type) {
+    public User(String fullName, String email, String phone, String doctorId, String dateOfBirth,
+                String gender, int type) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -68,5 +69,13 @@ public class User implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPharmacyId() {
+        return pharmacyId;
+    }
+
+    public String getCenterId() {
+        return centerId;
     }
 }

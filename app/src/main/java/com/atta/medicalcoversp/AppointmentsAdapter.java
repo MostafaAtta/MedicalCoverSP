@@ -10,16 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.atta.medicalcoversp.ui.AppointmentsFragmentDirections;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapter.MyViewHolder> {
 
@@ -77,17 +72,17 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
         switch (status){
             case "new":
-                holder.statusTv.setTextColor(R.color.blue);
+                holder.statusTv.setTextColor(activity.getResources().getColor(R.color.blue));
                 break;
             case "confirmed":
             case "Finished":
-                holder.statusTv.setTextColor(R.color.green);
+                holder.statusTv.setTextColor(activity.getResources().getColor(R.color.green));
                 break;
             case "canceled":
-                holder.statusTv.setTextColor(R.color.red);
+                holder.statusTv.setTextColor(activity.getResources().getColor(R.color.red));
                 break;
             default:
-                holder.statusTv.setTextColor(R.color.black);
+                holder.statusTv.setTextColor(activity.getResources().getColor(R.color.black));
         }
 
 
@@ -117,7 +112,7 @@ public class AppointmentsAdapter extends RecyclerView.Adapter<AppointmentsAdapte
 
         MyViewHolder(View view) {
             super(view);
-            clinicName = view.findViewById(R.id.clinic_name_tv);
+            clinicName = view.findViewById(R.id.patient_name_tv);
             dateTv = view.findViewById(R.id.date_tv);
             timeTv = view.findViewById(R.id.time_tv);
             statusTv = view.findViewById(R.id.status_tv);

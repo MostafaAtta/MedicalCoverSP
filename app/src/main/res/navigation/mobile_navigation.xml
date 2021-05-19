@@ -9,7 +9,14 @@
         android:id="@+id/navigation_home"
         android:name="com.atta.medicalcoversp.ui.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_medication_request_details"
+            app:destination="@id/navigation_medication_request_details" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_test_request_details"
+            app:destination="@id/navigation_test_request_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_appointment"
@@ -39,6 +46,9 @@
         <action
             android:id="@+id/action_navigation_appointment_details_to_navigation_new_prescription"
             app:destination="@id/navigation_new_prescription" />
+        <action
+            android:id="@+id/action_navigation_appointment_details_to_medicalHistoryFragment"
+            app:destination="@id/medicalHistoryFragment" />
     </fragment>
 
     <fragment
@@ -55,6 +65,35 @@
         <action
             android:id="@+id/action_navigation_new_prescription_to_navigation_appointment"
             app:destination="@id/navigation_appointment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_medication_request_details"
+        android:name="com.atta.medicalcoversp.ui.MedicationRequestDetailsFragment"
+        android:label="@string/request_details"
+        tools:layout="@layout/fragment_medication_request_details" >
+        <argument
+            android:name="request"
+            app:argType="com.atta.medicalcoversp.MedicationRequest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_test_request_details"
+        android:name="com.atta.medicalcoversp.ui.TestRequestDetailsFragment"
+        android:label="@string/request_details"
+        tools:layout="@layout/fragment_test_request_details" >
+        <argument
+            android:name="request"
+            app:argType="com.atta.medicalcoversp.TestRequest" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicalHistoryFragment"
+        android:name="com.atta.medicalcoversp.ui.MedicalHistoryFragment"
+        android:label="Medical History"
+        tools:layout="@layout/fragment_medical_history">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
     </fragment>
 
 </navigation>

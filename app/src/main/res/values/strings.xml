@@ -10,8 +10,6 @@
     <string name="logout">Logout</string>
     <string name="title_settings">Settings</string>
     <string name="title_appointment">Appointments</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_appointment_details">Appointment Details</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
@@ -36,4 +34,24 @@
     <string name="enter_medication_duration">Enter medication duration</string>
     <string name="new_medical_test">New Medical Test</string>
     <string name="enter_test_name">Enter Test or Radiology Name</string>
+    <string name="all">All</string>
+    <string name="medication_requests">Medication Requests:</string>
+    <string name="lab_requests">Lab Requests:</string>
+    <string name="radiology_requests">Radiology Requests:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="request_details">Request details</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
+    <string name="not_added_yet">Not added yet</string>
+    <string name="finish">Finish</string>
+    <string name="finished">Finished</string>
+    <string name="lab_tests">Lab Tests</string>
+    <string name="radiology">Radiology</string>
+    <string name="allergy">Allergy</string>
+    <string name="surgery">Surgery</string>
+    <string name="vaccine">Vaccine</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="blood_glucose">Blood Glucose</string>
+    <string name="family_history">Family History</string>
 </resources>

@@ -40,7 +40,7 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
 
     TextView clinicName, dateTv, timeTv, statusTv, patientNameTv, ageTv, genderTv;
 
-    Button confirmBtn, cancelBtn, addPrescription;
+    Button confirmBtn, cancelBtn, addPrescription, medicalHistoryBtn;
 
     String phoneNumber;
 
@@ -49,6 +49,8 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
     User patient;
 
     ImageView callImg;
+
+    Date appointmentDate, todayDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +67,7 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void initiateViews(){
-        clinicName = root.findViewById(R.id.clinic_name_tv);
+        clinicName = root.findViewById(R.id.patient_name_tv);
         dateTv = root.findViewById(R.id.date_tv);
         timeTv = root.findViewById(R.id.time_tv);
         statusTv = root.findViewById(R.id.status_tv);
@@ -77,6 +79,8 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
         confirmBtn.setOnClickListener(this);
         cancelBtn = root.findViewById(R.id.cancel_btn);
         cancelBtn.setOnClickListener(this);
+        medicalHistoryBtn = root.findViewById(R.id.medicalHistoryBtn);
+        medicalHistoryBtn.setOnClickListener(this);
 
         callImg = root.findViewById(R.id.call_imag);
 
@@ -100,6 +104,11 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
 
         clinicName.setText(appointment.getClinicName());
         dateTv.setText(appointment.getDate());
+
+        appointmentDate = appointment.getTimestamp().toDate();
+        todayDate = Calendar.getInstance().getTime();
+
+
         String timeSlot = appointment.getTimeSlot();
         String convertedTimeSlot;
         int hours = Integer.parseInt(Arrays.asList(timeSlot.split(":")).get(0));
@@ -122,19 +131,18 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
 
         switch (appointment.getStatus()){
             case "new":
-                statusTv.setTextColor(R.color.blue);
+                statusTv.setTextColor(getActivity().getResources().getColor(R.color.blue));
                 break;
             case "confirmed":
             case "Finished":
-                statusTv.setTextColor(R.color.green);
+                statusTv.setTextColor(getActivity().getResources().getColor(R.color.green));
                 break;
             case "canceled":
-                statusTv.setTextColor(R.color.red);
+                statusTv.setTextColor(getActivity().getResources().getColor(R.color.red));
                 break;
             default:
-                statusTv.setTextColor(R.color.black);
+                statusTv.setTextColor(getActivity().getResources().getColor(R.color.black));
         }
-
     }
 
     private void getUserDetails() {
@@ -190,16 +198,11 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                             public void onSuccess(Void aVoid) {
                                 appointment.setStatus("Confirmed");
                                 statusTv.setText(appointment.getStatus());
-                                confirmBtn.setText("Finished");
+                                confirmBtn.setText(getActivity().getResources().getString(R.string.finished));
                                 Toast.makeText(getContext(), "status updated", Toast.LENGTH_SHORT).show();
                             }
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(), "Error, try again", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Error, try again", Toast.LENGTH_SHORT).show());
             }else if (appointment.getStatus().equalsIgnoreCase("confirmed")){
                 Navigation.findNavController(view)
                         .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToNavigationNewPrescription(appointment, patient));
@@ -237,6 +240,12 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                             Toast.makeText(getContext(), "Error, try again", Toast.LENGTH_SHORT).show();
                         }
                     });
+        }else if (view == medicalHistoryBtn){
+            if (appointmentDate.getDate() == todayDate.getDate()) {
+                Navigation.findNavController(view)
+                        .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToMedicalHistoryFragment(patient));
+
+            }
         }
     }
 }

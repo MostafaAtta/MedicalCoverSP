@@ -48,12 +48,9 @@ public class AppointmentsFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         getAppointment();
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getAppointment();
-                swipeRefreshLayout.setRefreshing(false);
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getAppointment();
+            swipeRefreshLayout.setRefreshing(false);
         });
 
 

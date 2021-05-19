@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             case 0:
             case 2:
             case 3:
+            case 4:
                 navView.getMenu().getItem(1).setVisible(false);
                 break;
             case 1:

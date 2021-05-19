@@ -18,6 +18,8 @@ public class SessionManager {
     private static final String KEY_PHONE = "phone";
     private static final String KEY_TYPE = "type";
     private static final String KEY_DOCTOR_ID = "doctor_id";
+    private static final String KEY_PHARMACY_ID = "pharmacy_id";
+    private static final String KEY_CENTER_ID = "center_id";
     private static final String KEY_IS_LOGIN = "is_login";
 
     //mode 0 private
@@ -42,6 +44,8 @@ public class SessionManager {
         editor.putString(KEY_PHONE, user.getPhone());
         editor.putInt(KEY_TYPE, user.getType());
         editor.putString(KEY_DOCTOR_ID, user.getDoctorId());
+        editor.putString(KEY_PHARMACY_ID, user.getPharmacyId());
+        editor.putString(KEY_CENTER_ID, user.getCenterId());
         editor.putBoolean(KEY_IS_LOGIN, true);
 
         editor.apply();
@@ -58,6 +62,18 @@ public class SessionManager {
 
         return pref.getString(KEY_DOCTOR_ID, "");
     }
+
+    public String getPharmacyId(){
+
+        return pref.getString(KEY_PHARMACY_ID, "");
+    }
+
+
+    public String getCenterId(){
+
+        return pref.getString(KEY_CENTER_ID, "");
+    }
+
 
 
     public int getType(){

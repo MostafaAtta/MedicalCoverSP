@@ -4,6 +4,10 @@ public class Medication {
 
     String name, dose, duration;
 
+    public Medication(){
+
+    }
+
     public Medication(String name, String dose, String duration) {
         this.name = name;
         this.dose = dose;

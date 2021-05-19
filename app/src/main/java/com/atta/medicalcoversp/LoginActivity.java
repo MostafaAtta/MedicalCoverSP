@@ -106,7 +106,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
 
                             if (user.getType() == 0 || user.getType() == 1 ||
-                                    user.getType() == 2 || user.getType() == 3) {
+                                    user.getType() == 2 || user.getType() == 3
+                                    || user.getType() == 4) {
                                 login();
                             } else {
                                 Toast.makeText(LoginActivity.this, "You are not authorized", Toast.LENGTH_SHORT).show();
