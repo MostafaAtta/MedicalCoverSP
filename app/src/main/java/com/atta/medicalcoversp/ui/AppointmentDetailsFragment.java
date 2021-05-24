@@ -164,7 +164,9 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                     patient = documentSnapshot.toObject(User.class);
                     patient.setId(documentSnapshot.getId());
                     patientNameTv.setText(patient.getFullName());
-                    chronicDiseasesTxt.setText(arrayToString(patient.getChronicDiseases()));
+                    if (patient.getIsChronicDiseases()){
+                        chronicDiseasesTxt.setText(arrayToString(patient.getChronicDiseases()));
+                    }
                     phoneNumber = patient.getPhone();
                     callImg.setOnClickListener(this::onClick);
 
