@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -209,7 +210,7 @@ public class HomeFragment extends Fragment {
     private void showLabRequests() {
         db.collection("Test Requests")
                 .whereEqualTo("centerId", SessionManager.getInstance(getContext()).getCenterId())
-                .whereNotEqualTo("status", "Finished")
+                //.whereNotEqualTo("status", "Finished")
                 .orderBy("timestamp")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -218,8 +219,10 @@ public class HomeFragment extends Fragment {
                         ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                             MedicationRequest medicationRequest = documentSnapshot.toObject(MedicationRequest.class);
-                            medicationRequest.setId(documentSnapshot.getId());
-                            medicationRequests.add(medicationRequest);
+                            if (!medicationRequest.getStatus().equalsIgnoreCase("Finished")){
+                                medicationRequest.setId(documentSnapshot.getId());
+                                medicationRequests.add(medicationRequest);
+                            }
                             //updateDoctorName(labTestRecord);
                         }
 
@@ -227,14 +230,14 @@ public class HomeFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
-
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void showRadiologyRequests() {
         db.collection("Test Requests")
                 .whereEqualTo("centerId", SessionManager.getInstance(getContext()).getCenterId())
-                .whereNotEqualTo("status", "Finished")
+                //.whereNotEqualTo("status", "Finished")
                 .orderBy("timestamp")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -243,8 +246,10 @@ public class HomeFragment extends Fragment {
                         ArrayList<TestRequest> testRequests = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                             TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
-                            testRequest.setId(documentSnapshot.getId());
-                            testRequests.add(testRequest);
+                            if (!testRequest.getStatus().equalsIgnoreCase("Finished")) {
+                                testRequest.setId(documentSnapshot.getId());
+                                testRequests.add(testRequest);
+                            }
                             //updateDoctorName(labTestRecord);
                         }
 
@@ -259,16 +264,19 @@ public class HomeFragment extends Fragment {
     private void showPharmacyRequests() {
         db.collection("Medications Requests")
                 .whereEqualTo("pharmacyId", SessionManager.getInstance(getContext()).getPharmacyId())
-                .whereNotEqualTo("status", "Finished")
                 .orderBy("timestamp")
+                //.whereNotEqualTo("status", "Finished")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()){
                         ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                             MedicationRequest medicationRequest = documentSnapshot.toObject(MedicationRequest.class);
-                            medicationRequest.setId(documentSnapshot.getId());
-                            medicationRequests.add(medicationRequest);
+
+                            if (!medicationRequest.getStatus().equalsIgnoreCase("Finished")) {
+                                medicationRequest.setId(documentSnapshot.getId());
+                                medicationRequests.add(medicationRequest);
+                            }
                             //updateDoctorName(labTestRecord);
                         }
 

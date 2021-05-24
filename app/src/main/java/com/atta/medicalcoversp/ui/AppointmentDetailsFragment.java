@@ -17,14 +17,18 @@ import androidx.navigation.Navigation;
 
 import com.atta.medicalcoversp.Appointment;
 import com.atta.medicalcoversp.R;
+import com.atta.medicalcoversp.SessionManager;
 import com.atta.medicalcoversp.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,7 +42,8 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
 
     Appointment appointment;
 
-    TextView clinicName, dateTv, timeTv, statusTv, patientNameTv, ageTv, genderTv;
+    TextView clinicName, dateTv, timeTv, statusTv, patientNameTv, ageTv, genderTv, pregnantTitle,
+            pregnancyTxt, chronicDiseasesTxt, lastVisit;
 
     Button confirmBtn, cancelBtn, addPrescription, medicalHistoryBtn;
 
@@ -50,7 +55,9 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
 
     ImageView callImg;
 
-    Date appointmentDate, todayDate;
+    Date appointmentDate;
+
+    Calendar appointmentCalendar, todayDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +81,10 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
         patientNameTv = root.findViewById(R.id.patient_name);
         ageTv = root.findViewById(R.id.age_tv);
         genderTv = root.findViewById(R.id.gender_tv);
+        pregnantTitle = root.findViewById(R.id.pregnant_title);
+        pregnancyTxt = root.findViewById(R.id.pregnancy_txt);
+        chronicDiseasesTxt = root.findViewById(R.id.chronic_diseases_txt);
+        lastVisit = root.findViewById(R.id.last_visit);
 
         confirmBtn = root.findViewById(R.id.confirm_btn);
         confirmBtn.setOnClickListener(this);
@@ -106,7 +117,7 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
         dateTv.setText(appointment.getDate());
 
         appointmentDate = appointment.getTimestamp().toDate();
-        todayDate = Calendar.getInstance().getTime();
+        todayDate = Calendar.getInstance();
 
 
         String timeSlot = appointment.getTimeSlot();
@@ -153,16 +164,84 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                     patient = documentSnapshot.toObject(User.class);
                     patient.setId(documentSnapshot.getId());
                     patientNameTv.setText(patient.getFullName());
-
+                    chronicDiseasesTxt.setText(arrayToString(patient.getChronicDiseases()));
                     phoneNumber = patient.getPhone();
                     callImg.setOnClickListener(this::onClick);
 
                     genderTv.setText(patient.getGender());
+                    switch (patient.getGender()){
+                        case "male":
+                        case "Male":
+                            pregnancyTxt.setVisibility(View.GONE);
+                            pregnantTitle.setVisibility(View.GONE);
+                            break;
+                        case "female":
+                        case "Female":
+                            pregnancyTxt.setVisibility(View.VISIBLE);
+                            pregnantTitle.setVisibility(View.VISIBLE);
+                            pregnancyTxt.setText(patient.getIsPregnant()? "yes" : "No");
+                            break;
+                        default:
+
+                    }
                     calculateAge();
+                    getLastVisit();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(), "An Error", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    public void getLastVisit(){
+        db.collection("Appointments")
+                .whereEqualTo("doctorId", SessionManager.getInstance(getContext()).getDoctorId())
+                .whereEqualTo("userId", patient.getId())
+                .orderBy("timestamp")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            Appointment appointment = documentSnapshot.toObject(Appointment.class);
+                            appointment.setId(documentSnapshot.getId());
+
+                            showLastVisit(appointment);
+                            break;
+                        }
+
+                    }
+
+
+                })
+                .addOnFailureListener(e -> Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show());
+
+    }
+
+    private void showLastVisit(Appointment appointment) {
+
+        Timestamp timestamp = appointment.getTimestamp();
+
+        Date date = timestamp.toDate();
+
+        String pattern = "EEE, dd MMM";
+        SimpleDateFormat format = new SimpleDateFormat(pattern, new Locale("en", "US"));
+        lastVisit.setText(format.format(date));
+        lastVisit.setTextColor(getActivity().getResources().getColor(R.color.blue));
+        lastVisit.setOnClickListener(v -> {
+
+        });
+    }
+
+    public String arrayToString(ArrayList<String> array){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.size(); i++) {
+
+            sb.append(array.get(i));
+            if (i != array.size()-1)
+                sb.append(",");
+        }
+
+        return sb.toString();
     }
 
     private void calculateAge() {
@@ -241,7 +320,10 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                         }
                     });
         }else if (view == medicalHistoryBtn){
-            if (appointmentDate.getDate() == todayDate.getDate()) {
+            appointmentCalendar = Calendar.getInstance();
+            appointmentCalendar.setTime(appointmentDate);
+            if (appointmentCalendar.get(Calendar.YEAR) == todayDate.get(Calendar.YEAR) &&
+                    appointmentCalendar.get(Calendar.DAY_OF_YEAR) == todayDate.get(Calendar.DAY_OF_YEAR)) {
                 Navigation.findNavController(view)
                         .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToMedicalHistoryFragment(patient));
 

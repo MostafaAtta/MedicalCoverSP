@@ -94,6 +94,113 @@
         <argument
             android:name="user"
             app:argType="com.atta.medicalcoversp.User" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_allergyFragment"
+            app:destination="@id/allergyFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_bloodPressureFragment"
+            app:destination="@id/bloodPressureFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_bloodGlucoseFragment"
+            app:destination="@id/bloodGlucoseFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_radiologyFragment"
+            app:destination="@id/radiologyFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_bloodPressureFragment2"
+            app:destination="@id/bloodPressureFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_labTestsFragment"
+            app:destination="@id/labTestsFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_familyHistoryFragment"
+            app:destination="@id/familyHistoryFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_surgeryFragment"
+            app:destination="@id/surgeryFragment" />
+        <action
+            android:id="@+id/action_medicalHistoryFragment_to_VaccineFragment"
+            app:destination="@id/VaccineFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/allergyFragment"
+        android:name="com.atta.medicalcoversp.ui.AllergyFragment"
+        android:label="Allergy"
+        tools:layout="@layout/fragment_allergy">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bloodPressureFragment"
+        android:name="com.atta.medicalcoversp.ui.BloodPressureFragment"
+        android:label="Blood Pressure"
+        tools:layout="@layout/fragment_blood_pressure">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bloodGlucoseFragment"
+        android:name="com.atta.medicalcoversp.ui.BloodGlucoseFragment"
+        android:label="Blood Glucose"
+        tools:layout="@layout/fragment_blood_glucose">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/familyHistoryFragment"
+        android:name="com.atta.medicalcoversp.ui.FamilyHistoryFragment"
+        android:label="Family History"
+        tools:layout="@layout/fragment_family_history">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/labTestsFragment"
+        android:name="com.atta.medicalcoversp.ui.LabTestsFragment"
+        android:label="Lab Tests"
+        tools:layout="@layout/fragment_lab_tests">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/radiologyFragment"
+        android:name="com.atta.medicalcoversp.ui.RadiologyFragment"
+        android:label="Radiology"
+        tools:layout="@layout/fragment_radiology">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/surgeryFragment"
+        android:name="com.atta.medicalcoversp.ui.SurgeryFragment"
+        android:label="Surgery"
+        tools:layout="@layout/fragment_surgery">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/VaccineFragment"
+        android:name="com.atta.medicalcoversp.ui.VaccineFragment"
+        android:label="Vaccine"
+        tools:layout="@layout/fragment_vaccine">
+        <argument
+            android:name="user"
+            app:argType="com.atta.medicalcoversp.User" />
     </fragment>
 
 </navigation>
