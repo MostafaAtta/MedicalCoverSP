@@ -17,11 +17,8 @@ import com.atta.medicalcoversp.Appointment;
 import com.atta.medicalcoversp.AppointmentsAdapter;
 import com.atta.medicalcoversp.R;
 import com.atta.medicalcoversp.SessionManager;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,32 +61,26 @@ public class AppointmentsFragment extends Fragment {
                 .orderBy("timestamp")
                 .orderBy("timeSlot")
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                .addOnSuccessListener(queryDocumentSnapshots -> {
 
-                        if (!queryDocumentSnapshots.isEmpty()){
-                            ArrayList<Appointment> appointments = new ArrayList<>();
-                            for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
-                                Log.d(TAG, "Cached document data: " + documentSnapshot.getData());
-                                Appointment appointment = documentSnapshot.toObject(Appointment.class);
-                                appointment.setId(documentSnapshot.getId());
-                                appointments.add(appointment);
-                            }
-
-                            showSlotsRecycler(appointments);
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<Appointment> appointments = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            Log.d(TAG, "Cached document data: " + documentSnapshot.getData());
+                            Appointment appointment = documentSnapshot.toObject(Appointment.class);
+                            appointment.setId(documentSnapshot.getId());
+                            appointments.add(appointment);
                         }
 
-
+                        showSlotsRecycler(appointments);
                     }
+
+
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                .addOnFailureListener(e -> {
 
-                        Log.d(TAG, "Cached document data: " + e.getMessage());
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                    Log.d(TAG, "Cached document data: " + e.getMessage());
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
     }

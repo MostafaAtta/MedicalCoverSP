@@ -10,6 +10,8 @@ public class User implements Serializable {
 
     private ArrayList<String> chronicDiseases;
 
+    private ArrayList<String> tokens;
+
     private boolean isPregnant, isChronicDiseases;
 
     private int type;
@@ -20,7 +22,7 @@ public class User implements Serializable {
     public User(String fullName, String email, String phone, String city, String dateOfBirth,
                 String gender, String membershipNumber, String policyHolder, String policyNumber,
                 String bloodType, ArrayList<String> chronicDiseases, boolean isPregnant,
-                boolean isChronicDiseases, int type) {
+                boolean isChronicDiseases, int type, ArrayList<String> tokens) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -35,6 +37,7 @@ public class User implements Serializable {
         this.isChronicDiseases = isChronicDiseases;
         this.type = type;
         this.city = city;
+        this.tokens = tokens;
     }
 
 
@@ -119,5 +122,13 @@ public class User implements Serializable {
 
     public boolean getIsChronicDiseases() {
         return isChronicDiseases;
+    }
+
+    public ArrayList<String> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(ArrayList<String> tokens) {
+        this.tokens = tokens;
     }
 }

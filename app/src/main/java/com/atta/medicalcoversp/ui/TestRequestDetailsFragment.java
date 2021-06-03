@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.atta.medicalcoversp.Prescription;
 import com.atta.medicalcoversp.R;
@@ -85,12 +86,22 @@ public class TestRequestDetailsFragment extends Fragment {
         });
 
         finishBtn = root.findViewById(R.id.finish_btn);
-        if (SessionManager.getInstance(getContext()).getType() == 2 &&
+        if ((SessionManager.getInstance(getContext()).getType() == 3 ||
+                SessionManager.getInstance(getContext()).getType() == 4)&&
                 testRequest.getStatus().equalsIgnoreCase("Approved")){
-            rejectBtn.setVisibility(View.VISIBLE);
+            finishBtn.setVisibility(View.VISIBLE);
         }
-        rejectBtn.setOnClickListener(v -> {
-            updateStatus("Finished");
+        finishBtn.setOnClickListener(v -> {
+            if (testRequest.getType().equalsIgnoreCase("Laboratory")) {
+                Navigation.findNavController(v)
+                        .navigate(TestRequestDetailsFragmentDirections
+                                .actionNavigationTestRequestDetailsToNewLabTestFragment(testRequest));
+            }else if (testRequest.getType().equalsIgnoreCase("Radiology")){
+                Navigation.findNavController(v)
+                        .navigate(TestRequestDetailsFragmentDirections
+                                .actionNavigationTestRequestDetailsToNewRadiologyFragment(testRequest));
+            }
+            //updateStatus("Finished");
         });
 
         callImg = root.findViewById(R.id.call_imag);

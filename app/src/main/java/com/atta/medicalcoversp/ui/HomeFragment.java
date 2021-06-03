@@ -216,17 +216,18 @@ public class HomeFragment extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     if (!queryDocumentSnapshots.isEmpty()){
-                        ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
+                        ArrayList<TestRequest> testRequests = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
-                            MedicationRequest medicationRequest = documentSnapshot.toObject(MedicationRequest.class);
-                            if (!medicationRequest.getStatus().equalsIgnoreCase("Finished")){
-                                medicationRequest.setId(documentSnapshot.getId());
-                                medicationRequests.add(medicationRequest);
+                            TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
+                            if (!testRequest.getStatus().equalsIgnoreCase("Finished") &&
+                                    !testRequest.getStatus().equalsIgnoreCase("canceled") ){
+                                testRequest.setId(documentSnapshot.getId());
+                                testRequests.add(testRequest);
                             }
                             //updateDoctorName(labTestRecord);
                         }
 
-                        showPharmacyRecycler(medicationRequests);
+                        showLabRecycler(testRequests);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -246,7 +247,8 @@ public class HomeFragment extends Fragment {
                         ArrayList<TestRequest> testRequests = new ArrayList<>();
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                             TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
-                            if (!testRequest.getStatus().equalsIgnoreCase("Finished")) {
+                            if (!testRequest.getStatus().equalsIgnoreCase("Finished") &&
+                                    !testRequest.getStatus().equalsIgnoreCase("canceled") ) {
                                 testRequest.setId(documentSnapshot.getId());
                                 testRequests.add(testRequest);
                             }
@@ -273,7 +275,8 @@ public class HomeFragment extends Fragment {
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                             MedicationRequest medicationRequest = documentSnapshot.toObject(MedicationRequest.class);
 
-                            if (!medicationRequest.getStatus().equalsIgnoreCase("Finished")) {
+                            if (!medicationRequest.getStatus().equalsIgnoreCase("Finished") &&
+                                    !medicationRequest.getStatus().equalsIgnoreCase("canceled") ) {
                                 medicationRequest.setId(documentSnapshot.getId());
                                 medicationRequests.add(medicationRequest);
                             }

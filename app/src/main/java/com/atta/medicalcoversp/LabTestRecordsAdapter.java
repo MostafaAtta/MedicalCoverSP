@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.atta.medicalcoversp.ui.LabTestsFragmentDirections;
 import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
@@ -59,9 +61,10 @@ public class LabTestRecordsAdapter extends RecyclerView.Adapter<LabTestRecordsAd
 
 
 
-        holder.itemView.setOnClickListener(view -> {
-            //doctorsFragment.openSheet(labTestRecords)
-        });
+        holder.itemView.setOnClickListener(view ->
+                Navigation.findNavController(view)
+                        .navigate(LabTestsFragmentDirections.actionLabTestsFragmentToLabTestDetailsFragment(labTestRecord))
+        );
 
 
 

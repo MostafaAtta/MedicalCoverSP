@@ -11,15 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -96,34 +93,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void checkUser(){
         db.collection("Users").whereEqualTo("email", email).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (!queryDocumentSnapshots.isEmpty()){
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
 
-                            for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
-                                user = documentSnapshot.toObject(User.class);
-                            }
-
-                            if (user.getType() == 0 || user.getType() == 1 ||
-                                    user.getType() == 2 || user.getType() == 3
-                                    || user.getType() == 4) {
-                                login();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "You are not authorized", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }else {
-                            Toast.makeText(LoginActivity.this, "User not found, Please Register", Toast.LENGTH_SHORT).show();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            user = documentSnapshot.toObject(User.class);
+                            user.setId(documentSnapshot.getId());
                         }
+
+                        if (user.getType() == 0 || user.getType() == 1 ||
+                                user.getType() == 2 || user.getType() == 3
+                                || user.getType() == 4) {
+                            login();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "You are not authorized", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }else {
+                        Toast.makeText(LoginActivity.this, "User not found, Please Register", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnFailureListener(e -> Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show());
 
     }
 

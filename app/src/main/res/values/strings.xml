@@ -71,4 +71,20 @@
     <string name="patient_has_allergy_from">Patient has allergy from</string>
     <string name="pregnant">Pregnant:</string>
     <string name="chronic_diseases">Chronic Diseases:</string>
+    <string name="place2">Place:</string>
+    <string name="doctor2">Doctor:</string>
+    <string name="result2">Result:</string>
+    <string name="title2">Title:</string>
+    <string name="date">Date:</string>
+    <string name="note2">Note:</string>
+    <string name="test">Test</string>
+    <string name="normal">Normal</string>
+    <string name="title">Title</string>
+    <string name="doctor">Doctor</string>
+    <string name="save">Save</string>
+    <string name="place">Place</string>
+    <string name="add_new_lab_test">Add new lab test</string>
+    <string name="add_new_radiology">Add new radiology</string>
+    <string name="note">Note</string>
+    <string name="set_results">Set Results</string>
 </resources>

@@ -85,6 +85,12 @@
         <argument
             android:name="request"
             app:argType="com.atta.medicalcoversp.TestRequest" />
+        <action
+            android:id="@+id/action_navigation_test_request_details_to_newRadiologyFragment"
+            app:destination="@id/newRadiologyFragment" />
+        <action
+            android:id="@+id/action_navigation_test_request_details_to_newLabTestFragment"
+            app:destination="@id/newLabTestFragment" />
     </fragment>
     <fragment
         android:id="@+id/medicalHistoryFragment"
@@ -171,6 +177,9 @@
         <argument
             android:name="user"
             app:argType="com.atta.medicalcoversp.User" />
+        <action
+            android:id="@+id/action_labTestsFragment_to_labTestDetailsFragment"
+            app:destination="@id/labTestDetailsFragment" />
     </fragment>
 
     <fragment
@@ -181,6 +190,9 @@
         <argument
             android:name="user"
             app:argType="com.atta.medicalcoversp.User" />
+        <action
+            android:id="@+id/action_radiologyFragment_to_radiologyDetailsFragment"
+            app:destination="@id/radiologyDetailsFragment" />
     </fragment>
 
     <fragment
@@ -191,6 +203,9 @@
         <argument
             android:name="user"
             app:argType="com.atta.medicalcoversp.User" />
+        <action
+            android:id="@+id/action_surgeryFragment_to_surgeryDetailsFragment"
+            app:destination="@id/surgeryDetailsFragment" />
     </fragment>
 
     <fragment
@@ -203,4 +218,56 @@
             app:argType="com.atta.medicalcoversp.User" />
     </fragment>
 
+    <fragment
+        android:id="@+id/labTestDetailsFragment"
+        android:name="com.atta.medicalcoversp.ui.LabTestDetailsFragment"
+        android:label="Record Details"
+        tools:layout="@layout/fragment_lab_test_details">
+        <argument
+            android:name="record"
+            app:argType="com.atta.medicalcoversp.LabTestRecord" />
+    </fragment>
+    <fragment
+        android:id="@+id/radiologyDetailsFragment"
+        android:name="com.atta.medicalcoversp.ui.RadiologyDetailsFragment"
+        android:label="Record Details"
+        tools:layout="@layout/fragment_radiology_details">
+        <argument
+            android:name="record"
+            app:argType="com.atta.medicalcoversp.RadiologyRecord" />
+    </fragment>
+    <fragment
+        android:id="@+id/surgeryDetailsFragment"
+        android:name="com.atta.medicalcoversp.ui.SurgeryDetailsFragment"
+        android:label="Record Details"
+        tools:layout="@layout/fragment_surgery_details">
+        <argument
+            android:name="record"
+            app:argType="com.atta.medicalcoversp.Surgery" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newLabTestFragment"
+        android:name="com.atta.medicalcoversp.ui.NewLabTestFragment"
+        android:label="@string/add_new_lab_test"
+        tools:layout="@layout/fragment_new_lab_test" >
+        <action
+            android:id="@+id/action_newLabTestFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <argument
+            android:name="request"
+            app:argType="com.atta.medicalcoversp.TestRequest" />
+    </fragment>
+    <fragment
+        android:id="@+id/newRadiologyFragment"
+        android:name="com.atta.medicalcoversp.ui.NewRadiologyFragment"
+        android:label="@string/add_new_radiology"
+        tools:layout="@layout/fragment_new_radiology" >
+        <action
+            android:id="@+id/action_newRadiologyFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <argument
+            android:name="request"
+            app:argType="com.atta.medicalcoversp.TestRequest" />
+    </fragment>
 </navigation>
