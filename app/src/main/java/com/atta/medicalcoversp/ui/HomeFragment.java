@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     TextView filterTxt, labRequestsTv, medicationRequestsTv, radiologyRequestsTv;
     ImageView filterImg;
     RecyclerView labRequestsRecycler, medicationRequestsRecycler, radiologyRequestsRecycler;
+    SwitchCompat switchCompat;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,9 +67,29 @@ public class HomeFragment extends Fragment {
 
         userType = SessionManager.getInstance(getContext()).getType();
 
+        switchCompat = root.findViewById(R.id.switch1);
+        switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                switchCompat.setText(getString(R.string.new_requests));
+            }else {
+                switchCompat.setText(getString(R.string.old_requests));
+            }
+            getRequests(isChecked);
+        });
+
+        getRequests(true);
+
+        filterImg.setOnClickListener(v -> showFilterPopup());
+    }
+
+    private void getRequests(boolean newRequests) {
         switch (userType){
             case 0:
-                showAllRequests();
+                if (newRequests) {
+                    showAllRequests();
+                }else {
+                    showAllOldRequests();
+                }
                 break;
 
             case 2:
@@ -77,7 +99,12 @@ public class HomeFragment extends Fragment {
                 labRequestsTv.setVisibility(View.GONE);
                 radiologyRequestsRecycler.setVisibility(View.GONE);
                 radiologyRequestsTv.setVisibility(View.GONE);
-                showPharmacyRequests();
+
+                if (newRequests) {
+                    showPharmacyRequests();
+                }else {
+                    showPharmacyOldRequests();
+                }
                 break;
             case 3:
 
@@ -87,7 +114,12 @@ public class HomeFragment extends Fragment {
                 medicationRequestsTv.setVisibility(View.GONE);
                 radiologyRequestsRecycler.setVisibility(View.GONE);
                 radiologyRequestsTv.setVisibility(View.GONE);
-                showLabRequests();
+
+                if (newRequests) {
+                    showLabRequests();
+                }else {
+                    showLabOldRequests();
+                }
                 break;
 
             case 4:
@@ -98,12 +130,16 @@ public class HomeFragment extends Fragment {
                 labRequestsTv.setVisibility(View.GONE);
                 medicationRequestsRecycler.setVisibility(View.GONE);
                 medicationRequestsTv.setVisibility(View.GONE);
-                showRadiologyRequests();
+
+                if (newRequests) {
+                    showRadiologyRequests();
+                }else {
+                    showRadiologyOldRequests();
+                }
                 break;
         }
-
-        filterImg.setOnClickListener(v -> showFilterPopup());
     }
+
 
     private void showFilterPopup() {
 
@@ -191,6 +227,99 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+    private void showAllOldRequests() {
+        db.collection("Test Requests")
+                //.whereNotEqualTo("status", "pending approval")
+                .orderBy("timestamp")
+                .whereEqualTo("type", "Laboratory")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<TestRequest> testRequests = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
+                            if (!testRequest.getStatus().equalsIgnoreCase("pending approval")){
+
+                                testRequest.setId(documentSnapshot.getId());
+                                testRequests.add(testRequest);
+                            }
+                            //update(testRequest);
+                        }
+
+                        showLabRecycler(testRequests);
+                    }else {
+
+                        labRequestsRecycler.setVisibility(View.GONE);
+                        labRequestsTv.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+                });
+
+        db.collection("Test Requests")
+                //.whereNotEqualTo("status", "pending approval")
+                .orderBy("timestamp")
+                .whereEqualTo("type", "Radiology")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<TestRequest> testRequests = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
+                            if (!testRequest.getStatus().equalsIgnoreCase("pending approval")){
+
+                                testRequest.setId(documentSnapshot.getId());
+                                testRequests.add(testRequest);
+                            }
+                            //updateDoctorName(labTestRecord);
+                        }
+
+                        showRadiologyRecycler(testRequests);
+                    }else {
+
+                        radiologyRequestsRecycler.setVisibility(View.GONE);
+                        radiologyRequestsTv.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+
+                });
+
+        db.collection("Medications Requests")
+                //.whereNotEqualTo("status", "pending approval")
+                .orderBy("timestamp")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            MedicationRequest medicationRequest = documentSnapshot.toObject(MedicationRequest.class);
+                            if (!medicationRequest.getStatus().equalsIgnoreCase("pending approval")) {
+
+                                medicationRequest.setId(documentSnapshot.getId());
+                                medicationRequests.add(medicationRequest);
+                            }
+                            //update(medicationRequest);
+                        }
+
+                        showPharmacyRecycler(medicationRequests);
+                    }else {
+
+                        medicationRequestsRecycler.setVisibility(View.GONE);
+                        medicationRequestsTv.setVisibility(View.GONE);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
+
+                });
+    }
+
     private void update(MedicationRequest medicationRequest) {
 
         Map<String, Object> req = new HashMap<>();
@@ -235,6 +364,34 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+    private void showLabOldRequests() {
+        db.collection("Test Requests")
+                .whereEqualTo("centerId", SessionManager.getInstance(getContext()).getCenterId())
+                //.whereNotEqualTo("status", "Finished")
+                .orderBy("timestamp")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<TestRequest> testRequests = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
+                            if (testRequest.getStatus().equalsIgnoreCase("Finished") ||
+                                    testRequest.getStatus().equalsIgnoreCase("canceled") ){
+                                testRequest.setId(documentSnapshot.getId());
+                                testRequests.add(testRequest);
+                            }
+                            //updateDoctorName(labTestRecord);
+                        }
+
+                        showLabRecycler(testRequests);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                });
+    }
+
     private void showRadiologyRequests() {
         db.collection("Test Requests")
                 .whereEqualTo("centerId", SessionManager.getInstance(getContext()).getCenterId())
@@ -249,6 +406,34 @@ public class HomeFragment extends Fragment {
                             TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
                             if (!testRequest.getStatus().equalsIgnoreCase("Finished") &&
                                     !testRequest.getStatus().equalsIgnoreCase("canceled") ) {
+                                testRequest.setId(documentSnapshot.getId());
+                                testRequests.add(testRequest);
+                            }
+                            //updateDoctorName(labTestRecord);
+                        }
+
+                        showRadiologyRecycler(testRequests);
+                    }
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
+
+    private void showRadiologyOldRequests() {
+        db.collection("Test Requests")
+                .whereEqualTo("centerId", SessionManager.getInstance(getContext()).getCenterId())
+                //.whereNotEqualTo("status", "Finished")
+                .orderBy("timestamp")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<TestRequest> testRequests = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            TestRequest testRequest = documentSnapshot.toObject(TestRequest.class);
+                            if (testRequest.getStatus().equalsIgnoreCase("Finished") &&
+                                    testRequest.getStatus().equalsIgnoreCase("canceled") ) {
                                 testRequest.setId(documentSnapshot.getId());
                                 testRequests.add(testRequest);
                             }
@@ -290,7 +475,33 @@ public class HomeFragment extends Fragment {
 
                 });
     }
+    private void showPharmacyOldRequests() {
+        db.collection("Medications Requests")
+                .whereEqualTo("pharmacyId", SessionManager.getInstance(getContext()).getPharmacyId())
+                .orderBy("timestamp")
+                //.whereNotEqualTo("status", "Finished")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()){
+                        ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
+                        for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            MedicationRequest medicationRequest = documentSnapshot.toObject(MedicationRequest.class);
 
+                            if (medicationRequest.getStatus().equalsIgnoreCase("Finished") &&
+                                    medicationRequest.getStatus().equalsIgnoreCase("canceled") ) {
+                                medicationRequest.setId(documentSnapshot.getId());
+                                medicationRequests.add(medicationRequest);
+                            }
+                            //updateDoctorName(labTestRecord);
+                        }
+
+                        showPharmacyRecycler(medicationRequests);
+                    }
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
 
 
     private void showPharmacyRecycler(ArrayList<MedicationRequest> medicationRequests) {

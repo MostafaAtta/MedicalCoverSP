@@ -32,7 +32,11 @@
         android:id="@+id/navigation_settings"
         android:name="com.atta.medicalcoversp.ui.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_navigation_settings_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 
 
     <fragment
@@ -270,4 +274,9 @@
             android:name="request"
             app:argType="com.atta.medicalcoversp.TestRequest" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.atta.medicalcoversp.ui.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

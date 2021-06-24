@@ -47,5 +47,8 @@
         <item name="colorControlNormal">@color/gray_rating_bar</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.CircularImageViewShape">
+        <item name="cornerSize">50%</item>
+    </style>
 
 </resources>
