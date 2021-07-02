@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -43,7 +44,7 @@ public class SettingsFragment extends Fragment {
 
         logout.setOnClickListener(view -> {
 
-            checkToken(SessionManager.getInstance(getContext()).getToken());
+            showLogoutDialog();
         });
 
 
@@ -85,6 +86,24 @@ public class SettingsFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void showLogoutDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder
+                .setTitle("Are you sure?")
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        (dialog, id) ->
+                                checkToken(SessionManager.getInstance(getContext()).getToken()))
+                .setNegativeButton("Cancel",
+                        (dialog, id) -> dialog.cancel());
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     private void updateTokens(ArrayList<String> tokens) {
