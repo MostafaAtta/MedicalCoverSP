@@ -329,6 +329,8 @@ public class AppointmentDetailsFragment extends Fragment implements View.OnClick
                 Navigation.findNavController(view)
                         .navigate(AppointmentDetailsFragmentDirections.actionNavigationAppointmentDetailsToMedicalHistoryFragment(patient));
 
+            }else {
+                Toast.makeText(getContext(), "You can show medical history only at the day of the visit", Toast.LENGTH_SHORT).show();
             }
         }
     }

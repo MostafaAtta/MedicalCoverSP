@@ -60,7 +60,11 @@ public class SettingsFragment extends Fragment {
 
                 typeTxt.setText("Admin");
                 break;
+            case 1:
 
+                typeTxt.setText("Doctor");
+
+                break;
             case 2:
 
                 typeTxt.setText("Pharmacy");

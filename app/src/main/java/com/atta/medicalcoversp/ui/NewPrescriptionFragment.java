@@ -22,7 +22,6 @@ import androidx.navigation.Navigation;
 
 import com.atta.medicalcoversp.Appointment;
 import com.atta.medicalcoversp.Medication;
-import com.atta.medicalcoversp.Prescription;
 import com.atta.medicalcoversp.R;
 import com.atta.medicalcoversp.Specialty;
 import com.atta.medicalcoversp.User;
@@ -282,6 +281,8 @@ public class NewPrescriptionFragment extends Fragment {
 
         specialtiesSpinner.setAdapter(myAdapter);
 
+        //diagnosisSpinner.setSelection(specialties.indexOf(SessionManager.getInstance(getContext()).));
+
         specialtiesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -293,6 +294,7 @@ public class NewPrescriptionFragment extends Fragment {
 
             }
         });
+
     }
 
     private void getDiagnosis(String specialty) {
@@ -306,10 +308,11 @@ public class NewPrescriptionFragment extends Fragment {
                             String d = (String) documentSnapshot.getData().get("name");
                             diagnosisList.add(d);
                         }
-                        showDiagnosisSpinner();
+
                     }else {
                         Toast.makeText(getContext(), "Can't load diagnosis", Toast.LENGTH_SHORT).show();
                     }
+                    showDiagnosisSpinner();
                 })
                 .addOnFailureListener(
                         e -> Toast.makeText(getContext(), "Can't load diagnosis", Toast.LENGTH_SHORT).show()
