@@ -111,18 +111,12 @@ public class SettingsFragment extends Fragment {
         db.collection("Users")
                 .document(SessionManager.getInstance(getContext()).getUserId())
                 .update("tokens", tokens)
-                .addOnSuccessListener(aVoid -> {
-
-                    SessionManager.getInstance(getContext()).logout();
-                    Intent intent = new Intent(getContext(), LoginActivity.class);
-
-                    // Closing all the Activities
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                    // Add new Flag to start new Activity
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getActivity().startActivity(intent);
-                });
+                .addOnSuccessListener(aVoid ->
+                    logout()
+                )
+                .addOnFailureListener(e ->
+                    logout()
+                );
     }
 
 
@@ -139,8 +133,22 @@ public class SettingsFragment extends Fragment {
                             tokens.remove(token);
 
                             updateTokens(tokens);
+                        }else {
+                            logout();
                         }
                     }
                 });
+    }
+
+    private void logout() {
+        SessionManager.getInstance(getContext()).logout();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+
+        // Closing all the Activities
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        // Add new Flag to start new Activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getActivity().startActivity(intent);
     }
 }
