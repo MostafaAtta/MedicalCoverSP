@@ -131,8 +131,8 @@ public class SettingsFragment extends Fragment {
                         if (tokens.contains(token)) {
 
                             tokens.remove(token);
-
                             updateTokens(tokens);
+
                         }else {
                             logout();
                         }
