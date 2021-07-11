@@ -45,6 +45,8 @@ public class NewPrescriptionFragment extends Fragment {
 
     EditText diagnosisText;
 
+    TextInputEditText noteText;
+
     View root;
 
     User patient;
@@ -94,6 +96,7 @@ public class NewPrescriptionFragment extends Fragment {
         companyNameTv = root.findViewById(R.id.company_name);
         medicationsTv = root.findViewById(R.id.medications);
         labRadioServicesTv= root.findViewById(R.id.labRadioServices);
+        noteText= root.findViewById(R.id.noteText);
 
         diagnosisText = root.findViewById(R.id.diagnosisText);
         specialtiesSpinner = root.findViewById(R.id.speciality_spinner);
@@ -135,6 +138,7 @@ public class NewPrescriptionFragment extends Fragment {
         prescription.put("creationDate", creationDate);
         prescription.put("medications", medications);
         prescription.put("medicalTests", medicalTests);
+        prescription.put("note", noteText.getText().toString().trim());
 
         db.collection("Prescriptions").add(prescription)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

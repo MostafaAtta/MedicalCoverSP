@@ -29,7 +29,7 @@ public class SettingsFragment extends Fragment {
 
     FirebaseFirestore db;
 
-    CardView profileCard;
+    CardView profileCard, companiesCard, usersCard;
 
     TextView nameTxt, typeTxt;
 
@@ -51,6 +51,17 @@ public class SettingsFragment extends Fragment {
         profileCard = root.findViewById(R.id.profileCard);
         profileCard.setOnClickListener(view -> Navigation.findNavController(view)
                 .navigate(SettingsFragmentDirections.actionNavigationSettingsToProfileFragment()));
+
+
+        companiesCard = root.findViewById(R.id.companyCard);
+        companiesCard.setOnClickListener(view -> Navigation.findNavController(view)
+                .navigate(SettingsFragmentDirections.actionNavigationSettingsToCompaniesFragment()));
+
+
+        usersCard = root.findViewById(R.id.usersCard);
+        usersCard.setOnClickListener(view -> Navigation.findNavController(view)
+                .navigate(SettingsFragmentDirections.actionNavigationSettingsToServiceProvidersFragment()));
+
         nameTxt = root.findViewById(R.id.usernameTxt);
         nameTxt.setText(SessionManager.getInstance(getContext()).getUsername());
 

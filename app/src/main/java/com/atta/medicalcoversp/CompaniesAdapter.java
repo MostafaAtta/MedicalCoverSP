@@ -8,22 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.Timestamp;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.MyViewHolder> {
+public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.MyViewHolder> {
 
-    private final List<Vaccine> vaccines;
+    private final List<Company> companies;
 
 
-    public VaccineAdapter(ArrayList<Vaccine> data) {
+    public CompaniesAdapter(ArrayList<Company> data) {
 
-        this.vaccines = data;
+        this.companies = data;
     }
 
     @NonNull
@@ -44,35 +39,29 @@ public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
 
-        final Vaccine vaccine = vaccines.get(position) ;
+        final Company company = companies.get(position) ;
 
-        holder.vaccineTitle.setText(vaccine.getName());
+        holder.companyName.setText(company.getPolicyHolder());
 
-        Timestamp timestamp = vaccine.getTimestamp();
-
-        Date date = timestamp.toDate();
-
-        String pattern = "EEE, dd MMM";
-        SimpleDateFormat format = new SimpleDateFormat(pattern, new Locale("en", "US"));
-        holder.vaccineDate.setText(format.format(date));
+        holder.policyName.setText(company.getPolicyNumber());
 
     }
 
     @Override
     public int getItemCount() {
-        return vaccines.size();
+        return companies.size();
     }
 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView vaccineTitle, vaccineDate;
+        TextView companyName, policyName;
 
 
         MyViewHolder(View view) {
             super(view);
-            vaccineTitle = view.findViewById(R.id.company_name);
-            vaccineDate = view.findViewById(R.id.policy_no);
+            companyName = view.findViewById(R.id.company_name);
+            policyName = view.findViewById(R.id.policy_no);
 
         }
     }

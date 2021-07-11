@@ -36,6 +36,12 @@
         <action
             android:id="@+id/action_navigation_settings_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_companiesFragment"
+            app:destination="@id/companiesFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_serviceProvidersFragment"
+            app:destination="@id/serviceProvidersFragment" />
     </fragment>
 
 
@@ -279,4 +285,14 @@
         android:name="com.atta.medicalcoversp.ui.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/companiesFragment"
+        android:name="com.atta.medicalcoversp.CompaniesFragment"
+        android:label="Companies"
+        tools:layout="@layout/fragment_companies" />
+    <fragment
+        android:id="@+id/serviceProvidersFragment"
+        android:name="com.atta.medicalcoversp.ServiceProvidersFragment"
+        android:label="Service providers"
+        tools:layout="@layout/fragment_service_providers" />
 </navigation>
