@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button loginBtn;
@@ -126,10 +129,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d(TAG, "createUserWithEmail:success");
                         //FirebaseUser user = mAuth.getCurrentUser();
 
-                        SessionManager.getInstance(LoginActivity.this).login(user);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        updateUser();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -141,6 +141,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
 
     }
+
+    private void updateUser() {
+        Map<String, Object> userUpdated = new HashMap<>();
+        userUpdated.put("newAccount", false);
+
+        db.collection("Users")
+                .document(user.getId())
+                .update(userUpdated)
+                .addOnSuccessListener(unused -> {
+
+                    SessionManager.getInstance(LoginActivity.this).login(user);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show());
+
+    }
+
     public void login(){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
