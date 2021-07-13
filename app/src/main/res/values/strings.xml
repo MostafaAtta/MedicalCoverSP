@@ -97,4 +97,7 @@
     <string name="sp">Service providers</string>
     <string name="policy_no2">Policy No.</string>
     <string name="company_name2">Company name</string>
+    <string name="membership_number">Membership Number</string>
+    <string name="create_service_provider_account">Create Service Provider account</string>
+    <string name="register">Register</string>
 </resources>

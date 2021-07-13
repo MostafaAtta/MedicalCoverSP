@@ -16,6 +16,8 @@ public class User implements Serializable {
 
     private int type;
 
+    private boolean newAccount;
+
     public User() {
     }
 
@@ -130,5 +132,9 @@ public class User implements Serializable {
 
     public void setTokens(ArrayList<String> tokens) {
         this.tokens = tokens;
+    }
+
+    public boolean getNewAccount() {
+        return newAccount;
     }
 }

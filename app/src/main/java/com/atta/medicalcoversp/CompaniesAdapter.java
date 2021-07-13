@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.MyVi
 
 
             itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.vaccine_item_layout, parent, false);
+                    .inflate(R.layout.company_item_layout, parent, false);
 
 
 
@@ -44,6 +45,12 @@ public class CompaniesAdapter extends RecyclerView.Adapter<CompaniesAdapter.MyVi
         holder.companyName.setText(company.getPolicyHolder());
 
         holder.policyName.setText(company.getPolicyNumber());
+
+        holder.itemView.setOnClickListener(v -> {
+            Navigation.findNavController(v)
+                    .navigate(CompaniesFragmentDirections
+                            .actionCompaniesFragmentToMembersFragment(company.getId()));
+        });
 
     }
 

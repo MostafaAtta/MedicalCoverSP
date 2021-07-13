@@ -71,8 +71,8 @@ public class VaccineAdapter extends RecyclerView.Adapter<VaccineAdapter.MyViewHo
 
         MyViewHolder(View view) {
             super(view);
-            vaccineTitle = view.findViewById(R.id.company_name);
-            vaccineDate = view.findViewById(R.id.policy_no);
+            vaccineTitle = view.findViewById(R.id.vaccineTitle);
+            vaccineDate = view.findViewById(R.id.vaccineDate);
 
         }
     }

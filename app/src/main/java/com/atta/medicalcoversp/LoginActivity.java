@@ -7,13 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -104,7 +100,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (user.getType() == 0 || user.getType() == 1 ||
                                 user.getType() == 2 || user.getType() == 3
                                 || user.getType() == 4) {
-                            login();
+                            if (user.getNewAccount()){
+                                register();
+                            }else {
+
+                                login();
+                            }
                         } else {
                             Toast.makeText(LoginActivity.this, "You are not authorized", Toast.LENGTH_SHORT).show();
                         }
@@ -117,31 +118,51 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void register(){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success");
+                        //FirebaseUser user = mAuth.getCurrentUser();
+
+                        SessionManager.getInstance(LoginActivity.this).login(user);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    // ...
+                });
+
+    }
     public void login(){
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            //FirebaseUser user = mAuth.getCurrentUser();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        //FirebaseUser user = mAuth.getCurrentUser();
 
-                            SessionManager.getInstance(LoginActivity.this).login(user);
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                            // ...
-                        }
+                        SessionManager.getInstance(LoginActivity.this).login(user);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
 
                         // ...
                     }
+
+                    // ...
                 });
 
     }

@@ -54,13 +54,20 @@ public class SettingsFragment extends Fragment {
 
 
         companiesCard = root.findViewById(R.id.companyCard);
-        companiesCard.setOnClickListener(view -> Navigation.findNavController(view)
-                .navigate(SettingsFragmentDirections.actionNavigationSettingsToCompaniesFragment()));
 
 
         usersCard = root.findViewById(R.id.usersCard);
-        usersCard.setOnClickListener(view -> Navigation.findNavController(view)
-                .navigate(SettingsFragmentDirections.actionNavigationSettingsToServiceProvidersFragment()));
+        if (SessionManager.getInstance(getContext()).getType() == 0){
+
+            companiesCard.setOnClickListener(view -> Navigation.findNavController(view)
+                    .navigate(SettingsFragmentDirections.actionNavigationSettingsToCompaniesFragment()));
+
+            usersCard.setOnClickListener(view -> Navigation.findNavController(view)
+                    .navigate(SettingsFragmentDirections.actionNavigationSettingsToServiceProvidersFragment()));
+        }else {
+            companiesCard.setVisibility(View.GONE);
+            usersCard.setVisibility(View.GONE);
+        }
 
         nameTxt = root.findViewById(R.id.usernameTxt);
         nameTxt.setText(SessionManager.getInstance(getContext()).getUsername());

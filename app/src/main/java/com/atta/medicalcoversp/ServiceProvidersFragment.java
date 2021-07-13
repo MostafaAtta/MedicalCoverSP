@@ -1,64 +1,93 @@
 package com.atta.medicalcoversp;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ServiceProvidersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ServiceProvidersFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View root;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FirebaseFirestore db;
 
-    public ServiceProvidersFragment() {
-        // Required empty public constructor
-    }
+    ArrayList<User> users;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ServiceProvidersFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ServiceProvidersFragment newInstance(String param1, String param2) {
-        ServiceProvidersFragment fragment = new ServiceProvidersFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    FloatingActionButton addBtn;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    RecyclerView usersRecycler;
+
+    UsersAdapter myAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_service_providers, container, false);
+        root = inflater.inflate(R.layout.fragment_service_providers, container, false);
+
+        db = FirebaseFirestore.getInstance();
+
+        initiateViews();
+
+        return root;
+    }
+
+
+    private void initiateViews() {
+
+        addBtn = root.findViewById(R.id.createUSerActionButton);
+
+        addBtn.setOnClickListener(view ->
+                Navigation.findNavController(view)
+                .navigate(ServiceProvidersFragmentDirections
+                        .actionServiceProvidersFragmentToNewAccountFragment())
+        );
+
+        usersRecycler = root.findViewById(R.id.usersRecycler);
+
+        getUsers();
+    }
+
+    private void getUsers() {
+        db.collection("Users")
+                .whereNotIn("type", Arrays.asList(0 , 5))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    users = new ArrayList<>();
+                    for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                        User user = documentSnapshot.toObject(User.class);
+                        user.setId(documentSnapshot.getId());
+                        users.add(user);
+                        //updateDoctorName(labTestRecord);
+                    }
+
+                    showRecycler(users);
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
+    }
+
+
+    private void showRecycler(ArrayList<User> users) {
+        myAdapter = new UsersAdapter(users);
+
+        usersRecycler.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
+
+        usersRecycler.setAdapter(myAdapter);
     }
 }

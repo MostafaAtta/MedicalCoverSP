@@ -6,6 +6,8 @@ public class Company implements Serializable {
 
     private String id, policyHolder, policyNumber;
 
+    public Company() {
+    }
     public Company(String id, String policyHolder, String policyNumber) {
         this.id = id;
         this.policyHolder = policyHolder;

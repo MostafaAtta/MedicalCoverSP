@@ -19,67 +19,70 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CompaniesFragment extends Fragment {
+public class MembersFragment extends Fragment {
 
     View root;
 
     FirebaseFirestore db;
 
-    ArrayList<Company> companies;
+    ArrayList<String> members;
 
-    EditText companyName, policyNumber;
+    EditText membershipNumber;
 
     Button addBtn;
 
-    RecyclerView companiesRecycler;
+    RecyclerView membersRecycler;
 
-    CompaniesAdapter myAdapter;
+    MembersAdapter myAdapter;
+
+    String companyId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_companies, container, false);
+        root = inflater.inflate(R.layout.fragment_members, container, false);
 
         db = FirebaseFirestore.getInstance();
+
+        companyId = MembersFragmentArgs.fromBundle(getArguments()).getCompanyId();
 
         initiateViews();
 
         return root;
     }
 
+
     private void initiateViews() {
 
-        companyName = root.findViewById(R.id.companyName);
-        policyNumber = root.findViewById(R.id.policyNumber);
-        addBtn = root.findViewById(R.id.add_company_btn);
+        membershipNumber = root.findViewById(R.id.membershipNumber);
+        addBtn = root.findViewById(R.id.add_btn);
 
         addBtn.setOnClickListener(view ->
-                addCompany(companyName.getText().toString().trim(),
-                        policyNumber.getText().toString().trim())
+                addMember(membershipNumber.getText().toString().trim())
         );
 
-        companiesRecycler = root.findViewById(R.id.companiesRecycler);
+        membersRecycler = root.findViewById(R.id.membersRecycler);
 
-        getCompanies();
+        getMembers();
     }
 
-    private void addCompany(String name, String policyNo) {
+    private void addMember(String memberNo) {
 
-        Map<String, Object> company = new HashMap<>();
-        company.put("policyHolder", name);
-        company.put("policyNumber", policyNo);
+        Map<String, Object> member = new HashMap<>();
+        member.put("membershipNumber", memberNo);
 
         db.collection("Insurance Details")
+                .document(companyId)
+                .collection("members")
                 .document()
-                .set(company)
+                .set(member)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                    if (companies != null)
-                        companies.clear();
-                    companyName.setText("");
-                    policyNumber.setText("");
-                    getCompanies();
+                    if (members != null)
+                        members.clear();
+                    membershipNumber.setText("");
+                    getMembers();
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show()
@@ -87,19 +90,20 @@ public class CompaniesFragment extends Fragment {
 
     }
 
-    private void getCompanies() {
+    private void getMembers() {
         db.collection("Insurance Details")
+                .document(companyId)
+                .collection("members")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    companies = new ArrayList<>();
+                    members = new ArrayList<>();
                     for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots){
-                        Company company = documentSnapshot.toObject(Company.class);
-                        company.setId(documentSnapshot.getId());
-                        companies.add(company);
+                        String member = documentSnapshot.getData().get("membershipNumber").toString();
+                        members.add(member);
                         //updateDoctorName(labTestRecord);
                     }
 
-                    showRecycler(companies);
+                    showRecycler(members);
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show()
@@ -107,13 +111,12 @@ public class CompaniesFragment extends Fragment {
     }
 
 
-    private void showRecycler(ArrayList<Company> companies) {
-        myAdapter = new CompaniesAdapter(companies);
+    private void showRecycler(ArrayList<String> members) {
+        myAdapter = new MembersAdapter(members);
 
-        companiesRecycler.setLayoutManager(new LinearLayoutManager(getContext(),
+        membersRecycler.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
 
-        companiesRecycler.setAdapter(myAdapter);
+        membersRecycler.setAdapter(myAdapter);
     }
-
 }
