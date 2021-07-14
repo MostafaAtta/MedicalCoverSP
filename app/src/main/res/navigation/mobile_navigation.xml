@@ -42,6 +42,15 @@
         <action
             android:id="@+id/action_navigation_settings_to_serviceProvidersFragment"
             app:destination="@id/serviceProvidersFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_doctorsFragment"
+            app:destination="@id/doctorsFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_pharmaciesFragment"
+            app:destination="@id/pharmaciesFragment" />
+        <action
+            android:id="@+id/action_navigation_settings_to_servicesFragment"
+            app:destination="@id/servicesFragment" />
     </fragment>
 
 
@@ -317,4 +326,43 @@
         android:name="com.atta.medicalcoversp.NewAccountFragment"
         android:label="New Service provider"
         tools:layout="@layout/fragment_new_account" />
+    <fragment
+        android:id="@+id/doctorsFragment"
+        android:name="com.atta.medicalcoversp.ui.DoctorsFragment"
+        android:label="Doctors Fragment">
+        <action
+            android:id="@+id/action_doctorsFragment_to_newDoctorFragment"
+            app:destination="@id/newDoctorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pharmaciesFragment"
+        android:name="com.atta.medicalcoversp.ui.PharmaciesFragment"
+        android:label="Pharmacies Fragment">
+        <action
+            android:id="@+id/action_pharmaciesFragment_to_newPharmacyFragment"
+            app:destination="@id/newPharmacyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/servicesFragment"
+        android:name="com.atta.medicalcoversp.ui.ServicesFragment"
+        android:label="ServicesFragment" >
+        <action
+            android:id="@+id/action_servicesFragment_to_newServiceFragment"
+            app:destination="@id/newServiceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newDoctorFragment"
+        android:name="com.atta.medicalcoversp.NewDoctorFragment"
+        android:label="fragment_new_doctor"
+        tools:layout="@layout/fragment_new_doctor" />
+    <fragment
+        android:id="@+id/newPharmacyFragment"
+        android:name="com.atta.medicalcoversp.NewPharmacyFragment"
+        android:label="fragment_new_pharmacy"
+        tools:layout="@layout/fragment_new_pharmacy" />
+    <fragment
+        android:id="@+id/newServiceFragment"
+        android:name="com.atta.medicalcoversp.NewServiceFragment"
+        android:label="fragment_new_service"
+        tools:layout="@layout/fragment_new_service" />
 </navigation>

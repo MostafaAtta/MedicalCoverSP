@@ -93,11 +93,20 @@
     <string name="my_profile">Profile</string>
     <string name="full_name">Full Name</string>
     <string name="phone_number">Phone Number</string>
-    <string name="comapnies">Comapnies</string>
+    <string name="companies">Companies</string>
     <string name="sp">Service providers</string>
     <string name="policy_no2">Policy No.</string>
     <string name="company_name2">Company name</string>
     <string name="membership_number">Membership Number</string>
     <string name="create_service_provider_account">Create Service Provider account</string>
     <string name="register">Register</string>
+    <string name="doctors">Doctors</string>
+    <string name="pharmacies">Pharmacies</string>
+    <string name="services">Services</string>
+    <string name="create">Create</string>
+    <string name="specialties">Specialties</string>
+    <string name="name">Name</string>
+    <string name="none">None</string>
+    <string name="create_pharmacy">Create Pharmacy</string>
+    <string name="create_center">Create center</string>
 </resources>

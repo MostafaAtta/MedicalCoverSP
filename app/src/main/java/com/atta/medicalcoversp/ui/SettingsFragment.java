@@ -29,7 +29,7 @@ public class SettingsFragment extends Fragment {
 
     FirebaseFirestore db;
 
-    CardView profileCard, companiesCard, usersCard;
+    CardView profileCard, companiesCard, usersCard, doctorsCard, pharmaciesCard, servicesCard;
 
     TextView nameTxt, typeTxt;
 
@@ -54,9 +54,11 @@ public class SettingsFragment extends Fragment {
 
 
         companiesCard = root.findViewById(R.id.companyCard);
-
-
         usersCard = root.findViewById(R.id.usersCard);
+        doctorsCard = root.findViewById(R.id.doctorsCard);
+        pharmaciesCard = root.findViewById(R.id.pharmaciesCard);
+        servicesCard = root.findViewById(R.id.servicesCard);
+
         if (SessionManager.getInstance(getContext()).getType() == 0){
 
             companiesCard.setOnClickListener(view -> Navigation.findNavController(view)
@@ -64,9 +66,21 @@ public class SettingsFragment extends Fragment {
 
             usersCard.setOnClickListener(view -> Navigation.findNavController(view)
                     .navigate(SettingsFragmentDirections.actionNavigationSettingsToServiceProvidersFragment()));
+
+            doctorsCard.setOnClickListener(view -> Navigation.findNavController(view)
+                    .navigate(SettingsFragmentDirections.actionNavigationSettingsToDoctorsFragment()));
+
+            pharmaciesCard.setOnClickListener(view -> Navigation.findNavController(view)
+                    .navigate(SettingsFragmentDirections.actionNavigationSettingsToPharmaciesFragment()));
+
+            servicesCard.setOnClickListener(view -> Navigation.findNavController(view)
+                    .navigate(SettingsFragmentDirections.actionNavigationSettingsToServicesFragment()));
         }else {
             companiesCard.setVisibility(View.GONE);
             usersCard.setVisibility(View.GONE);
+            doctorsCard.setVisibility(View.GONE);
+            pharmaciesCard.setVisibility(View.GONE);
+            servicesCard.setVisibility(View.GONE);
         }
 
         nameTxt = root.findViewById(R.id.usernameTxt);
