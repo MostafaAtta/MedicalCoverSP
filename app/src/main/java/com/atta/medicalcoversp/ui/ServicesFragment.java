@@ -88,6 +88,33 @@ public class ServicesFragment extends Fragment {
 
         dialog.findViewById(R.id.close_img).setOnClickListener(view -> dialog.dismiss());
 
+        Spinner typesSpinner = dialog.findViewById(R.id.types_spinner);
+
+        ArrayList<String> types = new ArrayList<>();
+        types.add("Radiology");
+        types.add("Laboratory");
+
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(
+                getContext(),
+                android.R.layout.simple_list_item_1,
+                types);
+
+        typesSpinner.setAdapter(typesAdapter);
+
+        final String[] type = new String[1];
+
+        typesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                type[0] = types.get(i);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                type[0] = types.get(0);
+            }
+        });
         dialog.findViewById(R.id.add_btn).setOnClickListener(view -> {
 
             String name = ((EditText) dialog.findViewById(R.id.nameText))
@@ -95,33 +122,6 @@ public class ServicesFragment extends Fragment {
             String phone = ((EditText) dialog.findViewById(R.id.phoneText))
                     .getText().toString().trim();
 
-            Spinner typesSpinner = dialog.findViewById(R.id.types_spinner);
-
-            ArrayList<String> types = new ArrayList<>();
-            types.add("Radiology");
-            types.add("Laboratory");
-
-            ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(
-                    getContext(),
-                    android.R.layout.simple_list_item_1,
-                    types);
-
-            typesSpinner.setAdapter(typesAdapter);
-
-            final String[] type = new String[1];
-
-            typesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    type[0] = types.get(i);
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                    type[0] = types.get(0);
-                }
-            });
 
             if (name.isEmpty()){
                 Toast.makeText(getContext(), "You must enter center name", Toast.LENGTH_SHORT).show();
